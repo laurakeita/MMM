@@ -69,7 +69,7 @@ drive.mount('/content/drive')
 | `outputs/summary_output.html` | Meridian Marketing Mix Modeling Report — model fit, channel contribution waterfall, ROI bar chart, response curves |
 | `outputs/optimization_output.html` | MMM Optimization Report — budget reallocation scenario with ±30% channel constraints |
 | `images/rhat_convergence.png` | R-hat convergence diagnostic (all chains ≤ 1.1, confirming MCMC convergence) |
-| `images/visualization_2.png` | Additional model diagnostics chart |
+| `images/roi_by_channel.png` | ROI by channel with 90% posterior credible interval |
 
 ---
 

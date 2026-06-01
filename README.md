@@ -8,7 +8,7 @@ Built by [Laura Keita](https://github.com/laurakeita) — Growth Marketing & Str
 ## Project Structure
 
 ```
-meridian-mmm-portfolio/
+MMM/
 ├── data/
 │   ├── sample_data.csv          # 10-row preview of the dataset
 │   └── synthetic_mmm_data.csv  # 104-week synthetic dataset (2 channels)
@@ -17,11 +17,8 @@ meridian-mmm-portfolio/
 │   ├── 02_train_meridian_mmm.ipynb  # Bayesian MMM training
 │   ├── 03_model_diagnostics.ipynb   # Trace plots, R-hat, media charts
 │   ├── 04_budget_optimization.ipynb # ROI-based budget reallocation
-│   └── 05_synthetic_validation.ipynb# Ground-truth recovery validation
-├── src/
-│   ├── data_loader.py    # Column detection, Meridian dataset builder
-│   ├── validation.py     # EDA helpers (VIF, correlation, spend share)
-│   └── synthetic_data.py # Synthetic data generator with known ROI params
+│   ├── 05_synthetic_validation.ipynb# Ground-truth recovery validation
+│   └── 06_attribution_validation.ipynb # Estimated vs. ground-truth ROI comparison
 ├── outputs/              # Generated HTML reports (Colab → Drive)
 └── images/               # Exported charts
 ```
@@ -37,6 +34,7 @@ meridian-mmm-portfolio/
 | `03_model_diagnostics` | Checks convergence (trace plots, R-hat ≤ 1.1), plots contribution waterfall, ROI bar chart, response curves, adstock decay |
 | `04_budget_optimization` | Re-allocates the existing budget to maximise revenue; spend constraints are derived dynamically from actual channel spend |
 | `05_synthetic_validation` | Generates data with known ground-truth ROIs, fits the model, and verifies recovery accuracy |
+| `06_attribution_validation` | Compares Meridian's estimated ROI against known ground-truth values to quantify model accuracy |
 
 ---
 
@@ -59,8 +57,40 @@ meridian-mmm-portfolio/
 from google.colab import drive
 drive.mount('/content/drive')
 
-# 3. Run notebooks in order: 01 → 02 → 03 → 04
+# 3. Run notebooks in order: 01 → 02 → 03 → 04 → 05 → 06
 ```
+
+---
+
+## Outputs
+
+| File | Description |
+|------|-------------|
+| `outputs/summary_output.html` | Meridian Marketing Mix Modeling Report — model fit, channel contribution waterfall, ROI bar chart, response curves |
+| `outputs/optimization_output.html` | MMM Optimization Report — budget reallocation scenario with ±30% channel constraints |
+| `images/rhat_convergence.png` | R-hat convergence diagnostic (all chains ≤ 1.1, confirming MCMC convergence) |
+| `images/visualization_2.png` | Additional model diagnostics chart |
+
+---
+
+## Results
+
+**Model fit** — R²: 0.30 · MAPE: 9%
+
+**Channel ROI** (posterior mean, Jan 2023 – Dec 2024):
+
+| Channel | ROI | Contribution |
+|---------|-----|-------------|
+| Meta | 1.83 | 13.0% |
+| Google | 1.94 | 12.9% |
+| TikTok | 2.00 | 5.9% |
+| Baseline | — | 68.1% |
+
+**Budget optimisation** (fixed budget, ±30% constraint):
+- Google: 40% → 44% (+$65k)
+- Meta: 43% → 38% (−$61k)
+- TikTok: 18% → 17% (−$4k)
+- Incremental revenue lift: ~+$6k
 
 ---
 
